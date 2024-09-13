@@ -1,0 +1,15 @@
+{
+    "name": "auth-microservice",
+    "version": "1.0.0",
+    "description": "Auth Microservice for handling user authentication",
+    "scripts": {
+      "start": "nest start --project auth-microservice",
+      "build": "nest build --project auth-microservice",
+      "test": "jest --config ./jest-e2e.json"
+    },
+    "dependencies": {
+      "@nestjs/jwt": "^10.0.0",
+      "@prisma/client": "^5.0.0",
+      "bcryptjs": "^2.4.3"
+    }
+  }

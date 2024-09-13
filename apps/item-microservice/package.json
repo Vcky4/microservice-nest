@@ -1,0 +1,13 @@
+{
+  "name": "item-microservice",
+  "version": "1.0.0",
+  "description": "Item Microservice for handling item CRUD operations",
+  "scripts": {
+    "start": "nest start --project item-microservice",
+    "build": "nest build --project item-microservice",
+    "test": "jest --config ./jest-e2e.json"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.0.0"
+  }
+}
