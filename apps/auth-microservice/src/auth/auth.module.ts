@@ -6,10 +6,12 @@ import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
 import { UserModule } from '../user/user.module';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
   imports: [
     UserModule, 
+    PrismaModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'yourSecretKey', // Use a proper secret or environment variable
