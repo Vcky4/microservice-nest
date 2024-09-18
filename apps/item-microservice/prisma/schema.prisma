@@ -16,6 +16,7 @@ datasource db {
 model Item {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   name        String
+  ownerId     String
   description String
   price       Float
   createdAt   DateTime @default(now())
