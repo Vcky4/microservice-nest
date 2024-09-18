@@ -5,10 +5,12 @@ import { PrismaService } from '../prisma/prisma.service';
 export class ItemService {
     constructor(private prisma: PrismaService) { }
     async create(data: any) {
-        return await this.prisma.item.create(data)
+        // @ts-ignore
+        return await this.prisma.item.create({data})
     }
 
     async update(id: string, data: any) {
+        // @ts-ignore
         return await this.prisma.item.update({
             where: {
                 id
@@ -18,6 +20,7 @@ export class ItemService {
     }
 
     async getUserItems(id: string) {
+        // @ts-ignore
         return await this.prisma.item.findMany({
             where: {
                 ownerId: id
@@ -26,16 +29,19 @@ export class ItemService {
     }
 
     async getAllItems() {
+        // @ts-ignore
         return await this.prisma.item.findMany()
     }
 
     async getOne(id: string) {
+        // @ts-ignore
         return await this.prisma.item.findUnique({
             where: { id }
         })
     }
 
     async delete(id: string) {
+        // @ts-ignore
         return await this.prisma.item.delete({
             where: { id }
         })
