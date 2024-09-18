@@ -1,7 +1,10 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcryptjs';
 import { UserService } from '../user/user.service';
+import { RpcException } from '@nestjs/microservices';
+
+const bcrypt = require('bcrypt');
+
 
 @Injectable()
 export class AuthService {
@@ -12,7 +15,8 @@ export class AuthService {
 
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findByUsername(username);
-    if (user && bcrypt.compareSync(pass, user.password)) {
+    const valid = await this.comparePassword(pass, user.password)
+    if (user && valid) {
       const { password, ...result } = user;
       return result;
     }
@@ -21,22 +25,50 @@ export class AuthService {
 
   //sign up
   async signUp(data: any) {
-    return this.usersService.createUser(data)
+    const hashedPassword = await this.hashPassword(data.password);
+    return this.usersService.createUser({
+      ...data,
+      password: hashedPassword
+    }).then((data)=>{
+      return {
+        ...data,
+        password: undefined
+      }
+    })
   }
 
   async login(data: {
     email: string,
     password: string
   }) {
-    const user = await this.usersService.findByEmail(data.email)
-    const payload = { email: user.email, sub: user.id };
+    try {
+      const user = await this.usersService.findByEmail(data.email)
+      const payload = { email: user.email, sub: user.id };
 
-    //todo: compare password
+      //compare password
+      const validpassword = await this.comparePassword(data.password, user.password)
+      if (user && validpassword) {
+        return {
+          access_token: this.jwtService.sign(payload),
+          user: {
+            ...user,
+            password: undefined
+          }
+        };
+      }
+      throw new RpcException('Invalid credentials');
+    } catch (error) {
+      throw new RpcException(error.message);
+    }
+  }
 
+  async hashPassword(password: string) {
+    const result = await bcrypt.hash(password, 12);
+    return result;
+  }
 
-    return {
-      access_token: this.jwtService.sign(payload),
-      user
-    };
+  async comparePassword(password: string, hash: string) {
+    const result = await bcrypt.compare(password, hash);
+    return result;
   }
 }
