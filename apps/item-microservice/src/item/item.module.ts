@@ -9,6 +9,7 @@ import { PrismaService } from '../prisma/prisma.service';
     PrismaModule
   ],
   controllers: [ItemController],
-  providers: [ItemService, PrismaService]
+  providers: [ItemService, PrismaService],
+  exports: [PrismaService],
 })
 export class ItemModule {}

@@ -4,7 +4,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller()
 export class ItemController {
-    constructor(private readonly itemService: ItemService) { }
+    constructor(private readonly itemService: ItemService) {}
 
     @MessagePattern({ cmd: 'create' })
     async create(
