@@ -1,16 +1,21 @@
-import { Controller, Post, Body, Request, UseGuards, UnauthorizedException } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
 import { AuthService } from './auth.service';
 
-@Controller('auth')
+@Controller()
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
-  @Post('login')
-  async login(@Body() req) {
-    const user = await this.authService.validateUser(req.username, req.password);
-    if (!user) {
-      throw new UnauthorizedException();
-    }
-    return this.authService.login(user);
+  @MessagePattern({ cmd: 'login' })
+  async login(data: {
+    email: string,
+    password: string
+  }) {
+    return this.authService.login(data);
+  }
+
+  @MessagePattern({ cmd: 'register' })
+  async register(data: any) {
+    return this.authService.signUp(data);
   }
 }

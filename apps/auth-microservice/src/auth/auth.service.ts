@@ -19,10 +19,24 @@ export class AuthService {
     return null;
   }
 
-  async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
+  //sign up
+  async signUp(data: any) {
+    return this.usersService.createUser(data)
+  }
+
+  async login(data: {
+    email: string,
+    password: string
+  }) {
+    const user = await this.usersService.findByEmail(data.email)
+    const payload = { email: user.email, sub: user.id };
+
+    //todo: compare password
+
+
     return {
       access_token: this.jwtService.sign(payload),
+      user
     };
   }
 }
