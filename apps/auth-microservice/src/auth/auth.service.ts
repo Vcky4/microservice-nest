@@ -43,7 +43,7 @@ export class AuthService {
   }) {
     try {
       const user = await this.usersService.findByEmail(data.email)
-      const payload = { email: user.email, sub: user.id };
+      const payload = { email: user.email, id: user.id };
 
       //compare password
       const validpassword = await this.comparePassword(data.password, user.password)

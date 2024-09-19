@@ -2,8 +2,10 @@ import { Controller, Post, Body, Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('auth')
+@ApiTags('auth')
 export class AuthController {
     constructor(
         @Inject('AUTH_SERVICE')

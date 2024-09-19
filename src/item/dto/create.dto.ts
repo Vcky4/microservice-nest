@@ -7,7 +7,6 @@ export class CreateItemDto {
     @ApiProperty()
     description: string
 
-    @ApiProperty()
     ownerId: string
 
     @ApiProperty()
